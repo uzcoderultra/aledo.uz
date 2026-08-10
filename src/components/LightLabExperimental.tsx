@@ -151,7 +151,7 @@ export const LightLabExperimental: React.FC<LightLabExperimentalProps> = ({ curr
                 setIsHovered(false);
                 setPointerPos({ x: 50, y: 50 });
               }}
-              style={{ touchAction: 'pan-y' }}
+              style={{ touchAction: 'none' }}
               className="relative w-full h-[360px] sm:h-[450px] bg-[#0A0A0A] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center cursor-crosshair select-none"
             >
               {/* Target Image with Dynamic CRI Filter */}
@@ -211,30 +211,77 @@ export const LightLabExperimental: React.FC<LightLabExperimentalProps> = ({ curr
               )}
 
               {/* Honeycomb Anti-Glare Shield Visualizer Overlay */}
-              <div className="absolute top-4 left-4 z-20">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20">
                 <div
-                  className={`px-3 py-1.5 rounded-xl border backdrop-blur-md text-xs font-mono flex items-center gap-2 ${
+                  className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl border backdrop-blur-md text-[10px] sm:text-xs font-mono flex items-center gap-1.5 sm:gap-2 ${
                     labState.glareControl
                       ? 'bg-emerald-950/80 border-emerald-500/40 text-emerald-300'
                       : 'bg-red-950/80 border-red-500/40 text-red-300'
                   }`}
                 >
-                  <Shield className="w-4 h-4 shrink-0" />
+                  <Shield className="w-3.5 h-3.5 shrink-0" />
                   <span>
                     {labState.glareControl
-                      ? 'UGR < 16 HONEYCOMB: Антибликовые соты включены'
-                      : 'UGR 22: БЕЗ СОТ (Ослепляющий прямой блеск)'}
+                      ? 'UGR < 16: Антибликовые соты'
+                      : 'UGR 22: БЕЗ СОТ (Ослепление)'}
                   </span>
                 </div>
               </div>
 
-              {/* Hover Cursor Guidance Prompt */}
-              {!isHovered && labState.mode === 'accent' && (
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 bg-black/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 text-xs font-mono text-white animate-bounce pointer-events-none">
-                  👆 Наведите курсор для перемещения акцентного луча
+              {/* Target Aim Reticle Circle (Shows exact focal point on image) */}
+              {labState.mode === 'accent' && (
+                <div
+                  className="absolute pointer-events-none z-20 border-2 border-[#E8C45A] rounded-full w-8 h-8 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center shadow-lg transition-transform duration-75"
+                  style={{
+                    left: `${pointerPos.x}%`,
+                    top: `${pointerPos.y}%`,
+                  }}
+                >
+                  <div className="w-2 h-2 rounded-full bg-[#E8C45A] animate-ping" />
+                </div>
+              )}
+
+              {/* Touch & Mouse Guidance Prompt */}
+              {labState.mode === 'accent' && !isHovered && (
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 bg-black/85 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20 text-[10px] sm:text-xs font-mono text-white pointer-events-none text-center whitespace-nowrap">
+                  👆 Водите пальцем по изображению для управления лучом
                 </div>
               )}
             </div>
+
+            {/* Light Beam Quick Position Presets for Mobile & Fast Control */}
+            {labState.mode === 'accent' && (
+              <div className="mt-3 flex items-center justify-between gap-1.5 bg-[#0D0D0D] p-2 rounded-xl border border-white/10 overflow-x-auto no-scrollbar">
+                <span className="text-[10px] font-mono text-[#A6A39D] shrink-0 px-1 uppercase">ПОЗИЦИЯ ЛУЧА:</span>
+                <div className="flex items-center gap-1.5">
+                  {[
+                    { label: '↖ Слева', pos: { x: 25, y: 35 } },
+                    { label: '🎯 Центр', pos: { x: 50, y: 50 } },
+                    { label: '↗ Справа', pos: { x: 75, y: 35 } },
+                    { label: '⬇ Низ', pos: { x: 50, y: 75 } },
+                  ].map((preset) => {
+                    const isSelected = Math.abs(pointerPos.x - preset.pos.x) < 10 && Math.abs(pointerPos.y - preset.pos.y) < 10;
+                    return (
+                      <button
+                        key={preset.label}
+                        type="button"
+                        onClick={() => {
+                          setPointerPos(preset.pos);
+                          setIsHovered(true);
+                        }}
+                        className={`px-2.5 py-1 rounded-lg text-[10px] font-mono transition-all whitespace-nowrap cursor-pointer ${
+                          isSelected
+                            ? 'bg-[#E8C45A] text-[#0A0A0A] font-bold shadow-md'
+                            : 'bg-[#181818] text-[#A6A39D] hover:text-white border border-white/10'
+                        }`}
+                      >
+                        {preset.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Spectral Quality Live Graph Bar */}
             <div className="mt-4 p-4 bg-[#0D0D0D] rounded-2xl border border-white/10 grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
