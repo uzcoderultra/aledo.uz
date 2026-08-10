@@ -58,6 +58,25 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
     setTargetRotation(angleInDegrees);
   };
 
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!containerRef.current || e.touches.length === 0) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    const pointerX = touch.clientX - rect.left;
+    const pointerY = touch.clientY - rect.top;
+
+    const pivotX = rect.width / 2;
+    const pivotY = 80;
+
+    const dx = pointerX - pivotX;
+    const dy = Math.max(pointerY - pivotY, 60);
+
+    const angleInRadians = Math.atan2(dx, dy);
+    let angleInDegrees = -angleInRadians * (180 / Math.PI);
+    angleInDegrees = Math.max(-52, Math.min(52, angleInDegrees));
+    setTargetRotation(angleInDegrees);
+  };
+
   // Convert Kelvin temperature to RGB & HSL color properties
   const getKelvinRgb = (kelvin: number) => {
     if (kelvin <= 2400) return { r: 255, g: 160, b: 70, hex: '#FFA046' };
@@ -111,12 +130,15 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
         <div
           ref={containerRef}
           onPointerMove={handlePointerMove}
+          onTouchStart={handleTouchMove}
+          onTouchMove={handleTouchMove}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => {
             setIsHovered(false);
             setTargetRotation(12);
           }}
-          className="relative w-full min-h-[620px] sm:min-h-[660px] md:h-[700px] bg-[#0C0C0C] rounded-3xl border border-white/15 overflow-hidden flex flex-col justify-between p-4 sm:p-6 md:p-10 cursor-crosshair select-none shadow-2xl"
+          style={{ touchAction: 'pan-y' }}
+          className="relative w-full min-h-[500px] sm:min-h-[660px] md:h-[700px] bg-[#0C0C0C] rounded-3xl border border-white/15 overflow-hidden flex flex-col justify-between p-4 sm:p-6 md:p-10 cursor-crosshair select-none shadow-2xl"
         >
           {/* Architectural Background Grid Texture */}
           <div
@@ -127,12 +149,31 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
             }}
           />
 
-          {/* Top Stationary Ceiling Track Mount */}
-          <div className="relative z-30 flex flex-col items-center pt-2">
+          {/* Top Stationary Ceiling Track Mount & Mobile Quick Angle Buttons */}
+          <div className="relative z-30 flex flex-col items-center pt-2 gap-3">
             <div className="px-4 sm:px-6 py-1.5 min-w-[220px] sm:min-w-[280px] bg-[#181818] border border-white/20 rounded-lg shadow-xl flex items-center justify-between gap-3">
               <span className="w-2 h-2 rounded-full bg-[#E8C45A] animate-pulse shrink-0" />
               <span className="text-[10px] sm:text-xs font-mono text-[#A6A39D] tracking-widest whitespace-nowrap uppercase">ALEDO SONIC TRACK</span>
               <span className="w-2 h-2 rounded-full bg-[#E8C45A] animate-pulse shrink-0" />
+            </div>
+
+            {/* Quick Angle Preset Buttons for Mobile & Quick Control */}
+            <div className="flex items-center gap-1.5 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/15 text-[10px] sm:text-xs font-mono">
+              <span className="text-[#A6A39D] hidden xs:inline mr-1">УГОЛ:</span>
+              {[-40, -20, 0, 20, 40].map((deg) => (
+                <button
+                  key={deg}
+                  type="button"
+                  onClick={() => setTargetRotation(deg)}
+                  className={`px-2 py-0.5 rounded-md transition-all ${
+                    Math.abs(Math.round(targetRotation) - deg) <= 5
+                      ? 'bg-[#E8C45A] text-[#0A0A0A] font-bold'
+                      : 'bg-[#1C1C1C] text-[#A6A39D] hover:text-white'
+                  }`}
+                >
+                  {deg > 0 ? `+${deg}°` : `${deg}°`}
+                </button>
+              ))}
             </div>
 
             {/* Rotating Mechanical Luminaire Body */}
@@ -294,11 +335,33 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
         </div>
 
         {/* Realtime Adjustment Controls */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 bg-[#121212] p-6 rounded-2xl border border-white/10">
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-[#121212] p-5 sm:p-6 rounded-2xl border border-white/10">
+          {/* Fixture Tilt Angle Control */}
+          <div>
+            <div className="flex justify-between items-center mb-2 text-xs font-mono text-[#F5F3EE]">
+              <span>ПОВОРОТ СВЕТИЛЬНИКА (TILT)</span>
+              <span className="text-[#E8C45A] font-bold">{Math.round(targetRotation)}°</span>
+            </div>
+            <input
+              type="range"
+              min={-45}
+              max={45}
+              step={1}
+              value={Math.round(targetRotation)}
+              onChange={(e) => setTargetRotation(Number(e.target.value))}
+              className="w-full accent-[#E8C45A] cursor-pointer"
+            />
+            <div className="flex justify-between text-[10px] font-mono text-[#A6A39D] mt-1.5">
+              <span>-40° (Влево)</span>
+              <span>0° (Прямо)</span>
+              <span>+40° (Вправо)</span>
+            </div>
+          </div>
+
           {/* Beam Angle Slider */}
           <div>
             <div className="flex justify-between items-center mb-2 text-xs font-mono text-[#F5F3EE]">
-              <span>ОПТИЧЕСКИЙ УГОЛ (BEAM ANGLE)</span>
+              <span>ОПТИЧЕСКИЙ УГОЛ (BEAM)</span>
               <span className="text-[#E8C45A] font-bold">{beamAngle}°</span>
             </div>
             <input
@@ -311,9 +374,8 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
               className="w-full accent-[#E8C45A] cursor-pointer"
             />
             <div className="flex justify-between text-[10px] font-mono text-[#A6A39D] mt-1.5">
-              <span>12° (Акцент)</span>
-              <span>24° (Spot)</span>
-              <span>38° (Medium)</span>
+              <span>12° (Spot)</span>
+              <span>24° (Medium)</span>
               <span>60° (Wide)</span>
             </div>
           </div>
@@ -321,7 +383,7 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
           {/* Color Temperature Slider */}
           <div>
             <div className="flex justify-between items-center mb-2 text-xs font-mono text-[#F5F3EE]">
-              <span>ЦВЕТОВАЯ ТЕМПЕРАТУРА (KELVIN)</span>
+              <span>ТЕМПЕРАТУРА (KELVIN)</span>
               <span className="text-[#E8C45A] font-bold">{colorTemp}K</span>
             </div>
             <input
@@ -334,16 +396,16 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
               className="w-full accent-[#E8C45A] cursor-pointer"
             />
             <div className="flex justify-between text-[10px] font-mono text-[#A6A39D] mt-1.5">
-              <span>2400K (Warm)</span>
-              <span>3000K (Interior)</span>
-              <span>4500K (Daylight)</span>
+              <span>2400K</span>
+              <span>3000K</span>
+              <span>4500K</span>
             </div>
           </div>
 
           {/* Dimmer Level Slider */}
           <div>
             <div className="flex justify-between items-center mb-2 text-xs font-mono text-[#F5F3EE]">
-              <span>ЯРКОСТЬ / ДИММИРОВАНИЕ (DIMMER)</span>
+              <span>ЯРКОСТЬ (DIMMER)</span>
               <span className="text-[#E8C45A] font-bold">{dimmer}%</span>
             </div>
             <input
@@ -356,9 +418,9 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
               className="w-full accent-[#E8C45A] cursor-pointer"
             />
             <div className="flex justify-between text-[10px] font-mono text-[#A6A39D] mt-1.5">
-              <span>10% (Night)</span>
-              <span>50% (Ambient)</span>
-              <span>100% (Full Task)</span>
+              <span>10%</span>
+              <span>50%</span>
+              <span>100%</span>
             </div>
           </div>
         </div>

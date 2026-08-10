@@ -37,6 +37,15 @@ export const LightLabExperimental: React.FC<LightLabExperimentalProps> = ({ curr
     setPointerPos({ x, y });
   };
 
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!stageRef.current || e.touches.length === 0) return;
+    const rect = stageRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = Math.max(10, Math.min(90, ((touch.clientX - rect.left) / rect.width) * 100));
+    const y = Math.max(10, Math.min(90, ((touch.clientY - rect.top) / rect.height) * 100));
+    setPointerPos({ x, y });
+  };
+
   // Convert Kelvin temperature to RGB & HEX
   const getKelvinColor = (kelvin: number) => {
     if (kelvin <= 2700) return { r: 255, g: 180, b: 100, hex: '#FFBA6E', name: '2700K (Warm Sunset)' };
@@ -135,12 +144,15 @@ export const LightLabExperimental: React.FC<LightLabExperimentalProps> = ({ curr
             <div
               ref={stageRef}
               onPointerMove={handlePointerMove}
+              onTouchStart={handleTouchMove}
+              onTouchMove={handleTouchMove}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => {
                 setIsHovered(false);
                 setPointerPos({ x: 50, y: 50 });
               }}
-              className="relative w-full h-[400px] sm:h-[450px] bg-[#0A0A0A] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center cursor-crosshair select-none"
+              style={{ touchAction: 'pan-y' }}
+              className="relative w-full h-[360px] sm:h-[450px] bg-[#0A0A0A] rounded-2xl overflow-hidden border border-white/10 flex items-center justify-center cursor-crosshair select-none"
             >
               {/* Target Image with Dynamic CRI Filter */}
               <img

@@ -81,7 +81,7 @@ export const LightingScenarios: React.FC<LightingScenariosProps> = ({
         </div>
 
         {/* Preset Selector Tabs */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mb-6 sm:mb-8">
           {LIGHTING_SCENARIOS.map((scenario) => {
             const isActive = scenario.id === activeScenarioId;
             const title = currentLang === 'UZ' && scenario.titleUZ ? scenario.titleUZ : scenario.title;
@@ -97,7 +97,7 @@ export const LightingScenarios: React.FC<LightingScenariosProps> = ({
                   setActiveScenarioId(scenario.id);
                   setActiveHotspot(null);
                 }}
-                className={`p-5 sm:p-6 rounded-2xl border text-left transition-all duration-300 relative group overflow-hidden ${
+                className={`p-3.5 sm:p-5 md:p-6 rounded-2xl border text-left transition-all duration-300 relative group overflow-hidden ${
                   isActive
                     ? 'bg-[#181818] border-[#E8C45A] text-[#F5F3EE] shadow-2xl shadow-[#E8C45A]/10'
                     : 'bg-[#121212]/80 border-white/10 hover:border-white/30 text-[#A6A39D] hover:text-[#F5F3EE]'
@@ -109,20 +109,20 @@ export const LightingScenarios: React.FC<LightingScenariosProps> = ({
                     className="absolute top-0 left-0 right-0 h-1 bg-[#E8C45A]"
                   />
                 )}
-                <div className="flex items-center justify-between mb-3">
-                  <div className={`p-2.5 rounded-xl border transition-colors ${
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <div className={`p-2 sm:p-2.5 rounded-xl border transition-colors ${
                     isActive ? 'bg-[#E8C45A]/10 border-[#E8C45A]/40 text-[#E8C45A]' : 'bg-white/5 border-white/10 text-white/60 group-hover:text-white'
                   }`}>
                     {getPresetIcon(scenario.icon)}
                   </div>
-                  <span className="font-mono text-[10px] tracking-widest text-[#E8C45A]/80 uppercase">
+                  <span className="font-mono text-[9px] sm:text-[10px] tracking-widest text-[#E8C45A]/80 uppercase">
                     {scenario.colorTemp}K
                   </span>
                 </div>
-                <h3 className="font-sans font-medium text-base sm:text-lg mb-1 tracking-tight text-[#F5F3EE]">
+                <h3 className="font-sans font-medium text-xs sm:text-base md:text-lg mb-0.5 sm:mb-1 tracking-tight text-[#F5F3EE] line-clamp-1">
                   {title}
                 </h3>
-                <p className="text-xs font-mono text-[#A6A39D] line-clamp-1">
+                <p className="text-[10px] sm:text-xs font-mono text-[#A6A39D] line-clamp-1">
                   {subtitle}
                 </p>
               </motion.button>
@@ -131,15 +131,15 @@ export const LightingScenarios: React.FC<LightingScenariosProps> = ({
         </div>
 
         {/* Main Architectural Showcase Stage */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
           {/* Visual Showcase Box (8 cols) */}
-          <div className="lg:col-span-8 bg-[#121212] rounded-3xl border border-white/10 overflow-hidden relative min-h-[420px] sm:min-h-[520px] md:min-h-[600px] flex flex-col justify-between p-6 sm:p-8">
+          <div className="lg:col-span-8 bg-[#121212] rounded-2xl sm:rounded-3xl border border-white/10 overflow-hidden relative min-h-[360px] sm:min-h-[500px] md:min-h-[600px] flex flex-col justify-between p-3.5 sm:p-6 md:p-8">
             {/* Top Right Quick Compare Toggle */}
-            <div className="absolute top-6 right-6 z-30 flex items-center gap-2 bg-[#0D0D0D]/85 backdrop-blur-md p-1.5 rounded-xl border border-white/15">
+            <div className="absolute top-3 right-3 sm:top-6 sm:right-6 z-30 flex items-center gap-2 bg-[#0D0D0D]/85 backdrop-blur-md p-1 sm:p-1.5 rounded-xl border border-white/15">
               <button
                 type="button"
                 onClick={() => setIsUnlitMode(!isUnlitMode)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono flex items-center gap-2 transition-all cursor-pointer ${
+                className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[10px] sm:text-xs font-mono flex items-center gap-1.5 sm:gap-2 transition-all cursor-pointer ${
                   isUnlitMode
                     ? 'bg-red-500/20 text-red-400 border border-red-500/40'
                     : 'bg-[#E8C45A] text-[#0A0A0A] font-bold'
@@ -147,12 +147,12 @@ export const LightingScenarios: React.FC<LightingScenariosProps> = ({
               >
                 {isUnlitMode ? (
                   <>
-                    <Moon className="w-3.5 h-3.5" />
-                    <span>БЕЗ ОСВЕЩЕНИЯ (UNLIT)</span>
+                    <Moon className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span>БЕЗ ОСВЕЩЕНИЯ</span>
                   </>
                 ) : (
                   <>
-                    <Sun className="w-3.5 h-3.5" />
+                    <Sun className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     <span>ALEDO СЦЕНАРИЙ</span>
                   </>
                 )}
@@ -224,24 +224,24 @@ export const LightingScenarios: React.FC<LightingScenariosProps> = ({
                           initial={{ opacity: 0, y: 10, scale: 0.9 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                          className="absolute bottom-10 left-1/2 -translate-x-1/2 w-64 p-4 rounded-xl bg-[#141414]/95 backdrop-blur-xl border border-[#E8C45A]/40 shadow-2xl z-30 text-xs text-[#F5F3EE]"
+                          className="absolute bottom-10 left-1/2 -translate-x-1/2 w-52 sm:w-64 max-w-[80vw] p-3 sm:p-4 rounded-xl bg-[#141414]/95 backdrop-blur-xl border border-[#E8C45A]/40 shadow-2xl z-30 text-xs text-[#F5F3EE]"
                         >
                           <div className="flex items-center justify-between mb-1.5 border-b border-white/10 pb-1.5">
-                            <span className="font-mono text-[10px] text-[#E8C45A] tracking-wider uppercase">
+                            <span className="font-mono text-[9px] sm:text-[10px] text-[#E8C45A] tracking-wider uppercase">
                               {hotspot.type}
                             </span>
                             <button
                               type="button"
                               onClick={() => setActiveHotspot(null)}
-                              className="text-white/40 hover:text-white"
+                              className="text-white/40 hover:text-white p-1"
                             >
                               ✕
                             </button>
                           </div>
-                          <h4 className="font-sans font-medium text-sm text-white mb-1">
+                          <h4 className="font-sans font-medium text-xs sm:text-sm text-white mb-1">
                             {fixtureName}
                           </h4>
-                          <p className="font-mono text-[11px] text-[#A6A39D]">
+                          <p className="font-mono text-[10px] sm:text-[11px] text-[#A6A39D]">
                             {hotspot.specs}
                           </p>
                         </motion.div>
@@ -253,39 +253,39 @@ export const LightingScenarios: React.FC<LightingScenariosProps> = ({
             </div>
 
             {/* Bottom Overlay Info & Interactive Dimmer Slider */}
-            <div className="relative z-10 bg-[#0D0D0D]/90 backdrop-blur-md rounded-2xl border border-white/10 p-5 sm:p-6 mt-auto">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4 pb-4 border-b border-white/10">
+            <div className="relative z-10 bg-[#0D0D0D]/90 backdrop-blur-md rounded-2xl border border-white/10 p-3.5 sm:p-6 mt-auto">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-white/10">
                 <div>
                   <div className="flex items-center gap-2 mb-1">
                     <span
-                      className="w-2.5 h-2.5 rounded-full inline-block"
+                      className="w-2.5 h-2.5 rounded-full inline-block shrink-0"
                       style={{ backgroundColor: getCctColor(activeScenario.colorTemp) }}
                     />
-                    <h3 className="font-sans font-semibold text-lg text-white">
+                    <h3 className="font-sans font-semibold text-base sm:text-lg text-white">
                       {currentLang === 'UZ' && activeScenario.titleUZ ? activeScenario.titleUZ : activeScenario.title}
                     </h3>
                   </div>
-                  <p className="text-xs text-[#A6A39D] font-mono">
+                  <p className="text-[11px] sm:text-xs text-[#A6A39D] font-mono">
                     {currentLang === 'UZ' && activeScenario.subtitleUZ ? activeScenario.subtitleUZ : activeScenario.subtitle}
                   </p>
                 </div>
 
                 {/* Dimmer Control */}
-                <div className="flex items-center gap-3 bg-white/5 px-4 py-2.5 rounded-xl border border-white/10 shrink-0">
-                  <Sliders className="w-4 h-4 text-[#E8C45A]" />
-                  <div className="flex flex-col">
-                    <div className="flex justify-between items-center text-[10px] font-mono text-[#A6A39D] mb-1 gap-4">
-                      <span>{t.scenariosDimmerLabel || 'DIMMER'}</span>
-                      <span className="text-[#E8C45A] font-bold">{intensity}%</span>
-                    </div>
+                <div className="flex items-center justify-between gap-3 bg-white/5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-white/10 shrink-0 w-full sm:w-auto">
+                  <div className="flex items-center gap-2">
+                    <Sliders className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#E8C45A]" />
+                    <span className="text-[10px] font-mono text-[#A6A39D]">{t.scenariosDimmerLabel || 'DIMMER'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <input
                       type="range"
                       min="10"
                       max="100"
                       value={intensity}
                       onChange={(e) => setIntensity(Number(e.target.value))}
-                      className="w-28 sm:w-36 h-1.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#E8C45A]"
+                      className="w-24 sm:w-36 h-1.5 bg-white/20 rounded-lg appearance-none cursor-pointer accent-[#E8C45A]"
                     />
+                    <span className="text-[#E8C45A] font-bold text-[11px] font-mono min-w-[32px] text-right">{intensity}%</span>
                   </div>
                 </div>
               </div>
@@ -297,7 +297,7 @@ export const LightingScenarios: React.FC<LightingScenariosProps> = ({
           </div>
 
           {/* Telemetry & Specifications Panel (4 cols) */}
-          <div className="lg:col-span-4 flex flex-col justify-between gap-6 bg-[#121212] rounded-3xl border border-white/10 p-6 sm:p-8">
+          <div className="lg:col-span-4 flex flex-col justify-between gap-6 bg-[#121212] rounded-2xl sm:rounded-3xl border border-white/10 p-4 sm:p-6 md:p-8">
             <div>
               <div className="flex items-center gap-2 mb-6 text-xs font-mono text-[#E8C45A] tracking-widest uppercase border-b border-white/10 pb-4">
                 <ShieldCheck className="w-4 h-4" />
