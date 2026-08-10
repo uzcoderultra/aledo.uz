@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-dark: #0A0A0A;
+    --bg-near-dark: #111111;
+    --bg-graphite: #1C1C1C;
+    --text-warm: #F5F3EE;
+    --text-muted: #A6A39D;
+    --border-subtle: rgba(231, 228, 222, 0.12);
+    --aledo-gold: #E8C45A;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #0A0A0A;
+    color: #F5F3EE;
+    overflow-x: hidden;
+  }
+
+  /* WCAG AA Focus Visible Indicator */
+  *:focus-visible {
+    outline: 2px solid #E8C45A !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 4px rgba(232, 196, 90, 0.3) !important;
+  }
+
+  h1, h2, h3, .font-syne {
+    font-family: 'Montserrat', 'Plus Jakarta Sans', sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom Utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Responsive Editorial Typography Refinement for Small Mobile Viewports (375px - 390px) */
+@media (max-width: 420px) {
+  /* Adjust extreme tracking on small viewports so uppercase labels fit snugly without overflowing */
+  .tracking-\[0\.3em\],
+  .tracking-\[0\.2em\],
+  .tracking-widest {
+    letter-spacing: 0.12em !important;
+  }
+
+  /* Prevent text overflow or clipping on small screens */
+  button, a, label, h1, h2, h3, h4, span, p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Refine editorial line-heights for compact screens */
+  h1, h2, h3 {
+    line-height: 1.08 !important;
+  }
+
+  p {
+    line-height: 1.55 !important;
+  }
+}
+
+/* Modern Custom Architectural Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 9999px;
+  border: 2px solid #0A0A0A;
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E8C45A;
+  box-shadow: 0 0 10px rgba(232, 196, 90, 0.5);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: #D4E137;
+}
+
+/* Firefox standard scrollbar styles */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #262626 #0A0A0A;
+}
+
+/* Smooth Horizontal Scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Golden Ambient Glow Filter */
+.gold-glow {
+  box-shadow: 0 0 50px -10px rgba(232, 196, 90, 0.25);
+}
+
+.gold-glow-intense {
+  box-shadow: 0 0 100px 20px rgba(232, 196, 90, 0.35);
+}
+
+.text-gold-gradient {
+  background: linear-gradient(135deg, #FFFFFF 0%, #F5F3EE 60%, #E8C45A 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Subtle Noise Texture Overlay */
+.bg-noise {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+/* Light Beam Cone Styling */
+.light-cone {
+  clip-path: polygon(45% 0%, 55% 0%, 100% 100%, 0% 100%);
+}
+
+.clip-path-reveal {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pulse-light {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.95; transform: scale(1.05); }
+}
+
+.animate-pulse-light {
+  animation: pulse-light 6s ease-in-out infinite;
+}

@@ -1,0 +1,8 @@
+{
+  "name": "ALEDO Uzbekistan — Architectural Lighting",
+  "description": "Awwwards-level digital experience for ALEDO Uzbekistan, architectural and technical lighting company in Tashkent.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
