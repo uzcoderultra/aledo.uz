@@ -60,7 +60,7 @@ export const AledoNumbers: React.FC<AledoNumbersProps> = ({ currentLang }) => {
                 {stat.tag}
               </div>
 
-              <div className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold font-syne text-[#F5F3EE] tracking-tight group-hover:text-[#E8C45A] transition-colors duration-300">
+              <div className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold font-syne text-[#F5F3EE] tracking-tight group-hover:text-[#E8C45A] transition-colors duration-300">
                 {stat.value}
               </div>
 

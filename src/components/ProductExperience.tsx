@@ -50,7 +50,7 @@ export const ProductExperience: React.FC<ProductExperienceProps> = ({
         </div>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap gap-3 mb-16 border-b border-white/10 pb-6" role="tablist" aria-label="Product categories">
+        <div className="flex items-center gap-3 mb-12 sm:mb-16 border-b border-white/10 pb-6 overflow-x-auto no-scrollbar whitespace-nowrap" role="tablist" aria-label="Product categories">
           {categories.map((cat) => (
             <button
               key={cat.id}
