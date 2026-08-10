@@ -138,7 +138,7 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
             setTargetRotation(12);
           }}
           style={{ touchAction: 'pan-y' }}
-          className="relative w-full min-h-[500px] sm:min-h-[660px] md:h-[700px] bg-[#0C0C0C] rounded-3xl border border-white/15 overflow-hidden flex flex-col justify-between p-4 sm:p-6 md:p-10 cursor-crosshair select-none shadow-2xl"
+          className="relative w-full h-[520px] sm:h-[600px] md:h-[680px] bg-[#0C0C0C] rounded-3xl border border-white/15 overflow-hidden flex flex-col justify-between p-4 sm:p-6 md:p-10 cursor-crosshair select-none shadow-2xl"
         >
           {/* Architectural Background Grid Texture */}
           <div
@@ -208,10 +208,9 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
 
               {/* Volumetric Optical Cone Beam Emission (Trapezoid Geometry) */}
               <div
-                className="absolute top-[140px] sm:top-[160px] left-1/2 -translate-x-1/2 pointer-events-none origin-top transition-all duration-100"
+                className="absolute top-[130px] sm:top-[160px] left-1/2 -translate-x-1/2 pointer-events-none origin-top transition-all duration-100 h-[300px] sm:h-[340px] md:h-[400px]"
                 style={{
                   width: `${spotWidth * 0.9}px`,
-                  height: '380px',
                   background: `linear-gradient(to bottom, rgba(${colorRgbStr}, ${0.85 * peakIntensity}) 0%, rgba(${colorRgbStr}, ${0.35 * peakIntensity}) 40%, rgba(${colorRgbStr}, ${0.08 * peakIntensity}) 85%, transparent 100%)`,
                   clipPath: `polygon(${(50 - beamAngle * 0.45)}% 0%, ${(50 + beamAngle * 0.45)}% 0%, 100% 100%, 0% 100%)`,
                 }}
@@ -220,10 +219,10 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
           </div>
 
           {/* Interactive Architectural Object (Pedestal & Modern Sculpture) in Floor Center */}
-          <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
+          <div className="absolute bottom-6 sm:bottom-16 md:bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center pointer-events-none">
             {/* Minimalist Geometry Art Piece */}
             <div
-              className="w-20 h-20 rounded-xl border border-white/20 transition-all duration-150 flex items-center justify-center relative overflow-hidden backdrop-blur-sm"
+              className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl border border-white/20 transition-all duration-150 flex items-center justify-center relative overflow-hidden backdrop-blur-sm"
               style={{
                 backgroundColor: `rgba(28, 28, 28, ${0.7 + pedestalIlluminance * 0.3})`,
                 boxShadow: pedestalIlluminance > 0.1
@@ -238,11 +237,11 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
                   background: `linear-gradient(${180 - currentRotation}deg, rgba(${colorRgbStr}, ${pedestalIlluminance * 0.8}) 0%, transparent 70%)`,
                 }}
               />
-              <span className="font-mono text-[10px] text-white/50 tracking-widest z-10">ALEDO</span>
+              <span className="font-mono text-[9px] sm:text-[10px] text-white/50 tracking-widest z-10">ALEDO</span>
             </div>
 
             {/* Pedestal Block */}
-            <div className="w-28 h-16 bg-[#181818] border border-white/10 rounded-t-lg shadow-2xl relative overflow-hidden">
+            <div className="w-22 h-12 sm:w-28 sm:h-16 bg-[#181818] border border-white/10 rounded-t-lg shadow-2xl relative overflow-hidden">
               <div
                 className="absolute inset-0 transition-opacity duration-150"
                 style={{
@@ -255,7 +254,7 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
             <div
               className="h-2 rounded-full bg-black/90 blur-sm transition-all duration-100"
               style={{
-                width: `${70 + pedestalIlluminance * 30}px`,
+                width: `${60 + pedestalIlluminance * 30}px`,
                 transform: `translateX(${spotOffsetX * -0.35}px) scaleY(${0.5 + pedestalIlluminance * 0.5})`,
                 opacity: 0.2 + pedestalIlluminance * 0.6,
               }}
@@ -263,7 +262,7 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
           </div>
 
           {/* Floor Reflection Light Pool (Elliptical Photometric Spot) */}
-          <div className="absolute bottom-6 left-0 right-0 z-10 flex justify-center pointer-events-none">
+          <div className="absolute bottom-2 sm:bottom-6 left-0 right-0 z-10 flex justify-center pointer-events-none">
             <div
               className="rounded-full blur-2xl transition-all duration-75 relative"
               style={{
@@ -283,54 +282,54 @@ export const ProductExplorerInteractive: React.FC<ProductExplorerInteractiveProp
               />
             </div>
           </div>
+        </div>
 
-          {/* Telemetry & Specifications Panel (Bottom Bar) */}
-          <div className="relative z-30 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mt-auto pt-4 sm:pt-6 border-t border-white/10 bg-[#0A0A0A]/90 backdrop-blur-xl p-4 sm:p-6 rounded-2xl border border-white/15">
-            <div>
-              <span className="block text-[10px] sm:text-xs font-mono text-[#E8C45A] uppercase tracking-wider mb-1">
-                COLOR RENDERING (CRI)
-              </span>
-              <span className="text-lg sm:text-2xl font-bold font-sans text-[#E8C45A] block">
-                CRI 98+
-              </span>
-              <span className="block text-[10px] sm:text-xs text-[#A6A39D] font-mono mt-0.5">SunLike Spectrum</span>
-            </div>
+        {/* Telemetry & Specifications Panel (Technical Metrics Row) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-6 bg-[#0F0F0F] p-4 sm:p-6 rounded-2xl border border-white/15 shadow-xl">
+          <div>
+            <span className="block text-[10px] sm:text-xs font-mono text-[#E8C45A] uppercase tracking-wider mb-1">
+              COLOR RENDERING (CRI)
+            </span>
+            <span className="text-lg sm:text-2xl font-bold font-sans text-[#E8C45A] block">
+              CRI 98+
+            </span>
+            <span className="block text-[10px] sm:text-xs text-[#A6A39D] font-mono mt-0.5">SunLike Spectrum</span>
+          </div>
 
-            <div>
-              <span className="block text-[10px] sm:text-xs font-mono text-[#E8C45A] uppercase tracking-wider mb-1">
-                COLOR TEMP (CCT)
-              </span>
-              <div className="flex items-center gap-2">
-                <span
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: colorData.hex }}
-                />
-                <span className="text-lg sm:text-2xl font-bold font-sans text-white block">
-                  {colorTemp}K
-                </span>
-              </div>
-              <span className="block text-[10px] sm:text-xs text-[#A6A39D] font-mono mt-0.5">Tunable White</span>
-            </div>
-
-            <div>
-              <span className="block text-[10px] sm:text-xs font-mono text-[#E8C45A] uppercase tracking-wider mb-1">
-                BEAM ANGLE OPTICS
-              </span>
-              <span className="text-lg sm:text-2xl font-bold font-sans text-[#E8C45A] block">
-                {beamAngle}°
-              </span>
-              <span className="block text-[10px] sm:text-xs text-[#A6A39D] font-mono mt-0.5">TIR Reflector Lens</span>
-            </div>
-
-            <div>
-              <span className="block text-[10px] sm:text-xs font-mono text-[#E8C45A] uppercase tracking-wider mb-1">
-                CALCULATED ILLUMINANCE
-              </span>
+          <div>
+            <span className="block text-[10px] sm:text-xs font-mono text-[#E8C45A] uppercase tracking-wider mb-1">
+              COLOR TEMP (CCT)
+            </span>
+            <div className="flex items-center gap-2">
+              <span
+                className="w-3 h-3 rounded-full"
+                style={{ backgroundColor: colorData.hex }}
+              />
               <span className="text-lg sm:text-2xl font-bold font-sans text-white block">
-                {Math.round(peakIntensity * 650)} LX
+                {colorTemp}K
               </span>
-              <span className="block text-[10px] sm:text-xs text-[#A6A39D] font-mono mt-0.5">@ 3.0m Distance</span>
             </div>
+            <span className="block text-[10px] sm:text-xs text-[#A6A39D] font-mono mt-0.5">Tunable White</span>
+          </div>
+
+          <div>
+            <span className="block text-[10px] sm:text-xs font-mono text-[#E8C45A] uppercase tracking-wider mb-1">
+              BEAM ANGLE OPTICS
+            </span>
+            <span className="text-lg sm:text-2xl font-bold font-sans text-[#E8C45A] block">
+              {beamAngle}°
+            </span>
+            <span className="block text-[10px] sm:text-xs text-[#A6A39D] font-mono mt-0.5">TIR Reflector Lens</span>
+          </div>
+
+          <div>
+            <span className="block text-[10px] sm:text-xs font-mono text-[#E8C45A] uppercase tracking-wider mb-1">
+              CALCULATED ILLUMINANCE
+            </span>
+            <span className="text-lg sm:text-2xl font-bold font-sans text-white block">
+              {Math.round(peakIntensity * 650)} LX
+            </span>
+            <span className="block text-[10px] sm:text-xs text-[#A6A39D] font-mono mt-0.5">@ 3.0m Distance</span>
           </div>
         </div>
 
