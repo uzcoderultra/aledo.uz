@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Sliders, Download, Eye, Sparkles, ArrowUpRight } from 'lucide-react';
 import { Language, ProductItem } from '../types';
 import { ALEDO_TRANSLATIONS, ALEDO_PRODUCTS } from '../data/aledoData';

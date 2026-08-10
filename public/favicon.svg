@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Dark background container -->
+  <rect width="64" height="64" rx="16" fill="#0A0A0A"/>
+  
+  <!-- Subtle golden border accent -->
+  <rect x="1" y="1" width="62" height="62" rx="15" stroke="#E8C45A" stroke-opacity="0.25" stroke-width="2"/>
+
+  <!-- Degree symbol (°) representing Light Kelvin / Color Temp -->
+  <circle cx="16" cy="18" r="4.5" stroke="#E8C45A" stroke-width="3" fill="none"/>
+
+  <!-- Stylized lowercase 'a' for aledo -->
+  <text x="21" y="47" fill="#FFFFFF" font-family="'Plus Jakarta Sans', 'Montserrat', system-ui, sans-serif" font-size="38" font-weight="800" letter-spacing="-2">a</text>
+  
+  <!-- Architectural light ray accent dot -->
+  <circle cx="50" cy="46" r="3" fill="#E8C45A"/>
+</svg>

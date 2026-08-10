@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Send, Paperclip, CheckCircle2, Phone, Mail, MapPin, MessageSquare, Instagram } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, Send, Paperclip, CheckCircle2, Phone, Mail, MapPin, MessageSquare, Instagram, ArrowLeft } from 'lucide-react';
 import { Language } from '../types';
 import { ALEDO_TRANSLATIONS } from '../data/aledoData';
 
@@ -34,6 +34,26 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
     }
   }, [initialMessage]);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const t = ALEDO_TRANSLATIONS[currentLang];
@@ -56,13 +76,15 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby="discussion-modal-title"
-        className="fixed inset-0 z-50 bg-[#0A0A0A]/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 overflow-y-auto"
+        onClick={onClose}
+        className="fixed inset-0 z-50 bg-[#0A0A0A]/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 md:p-8 overflow-y-auto"
       >
         <motion.div
           initial={{ scale: 0.95, y: 20 }}
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.95, y: 20 }}
-          className="relative w-full max-w-5xl bg-[#111111] border border-white/15 rounded-3xl p-6 md:p-12 my-8 text-[#F5F3EE] grid grid-cols-1 lg:grid-cols-12 gap-12"
+          onClick={(e) => e.stopPropagation()}
+          className="relative w-full max-w-5xl bg-[#111111] border border-white/15 rounded-3xl p-5 sm:p-8 md:p-12 my-auto text-[#F5F3EE] grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-h-[92vh] overflow-y-auto"
         >
           {/* Close */}
           <button

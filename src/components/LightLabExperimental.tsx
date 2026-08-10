@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Lightbulb, Sliders, Sun, Shield, Eye, Sparkles, Layers, Image as ImageIcon, CheckCircle, AlertTriangle, Compass, SlidersHorizontal } from 'lucide-react';
 import { Language, LightLabState } from '../types';
 import { ALEDO_TRANSLATIONS } from '../data/aledoData';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { Download, Layers, ShieldCheck, CheckCircle2, ArrowRight } from 'lucide-react';
 import { Language } from '../types';
 import { ALEDO_TRANSLATIONS } from '../data/aledoData';

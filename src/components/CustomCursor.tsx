@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 export const CustomCursor: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: -100, y: -100 });
@@ -63,7 +63,7 @@ export const CustomCursor: React.FC = () => {
           width: cursorText ? 88 : isHovered ? 48 : 32,
           height: cursorText ? 88 : isHovered ? 48 : 32,
           opacity: isHovered || cursorText ? 1 : 0.35,
-          backgroundColor: cursorText ? '#E8C45A' : 'transparent',
+          backgroundColor: cursorText ? '#E8C45A' : 'rgba(232, 196, 90, 0)',
           color: cursorText ? '#0A0A0A' : '#E8C45A'
         }}
         transition={{ type: 'spring', damping: 25, stiffness: 280 }}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { ArrowDownRight, Compass, Sparkles, Layers } from 'lucide-react';
 import { Language } from '../types';
 import { ALEDO_TRANSLATIONS } from '../data/aledoData';

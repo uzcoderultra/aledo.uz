@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Calendar, Clock, ArrowUpRight, X, User } from 'lucide-react';
 import { Language, EducationalArticle } from '../types';
 import { ALEDO_TRANSLATIONS, EDUCATIONAL_ARTICLES } from '../data/aledoData';

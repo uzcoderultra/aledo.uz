@@ -118,7 +118,10 @@ export default function App() {
           />
 
           {/* 7. Architectural Projects Gallery (Uzbekistan Case Studies) */}
-          <ProjectsGallery currentLang={currentLang} />
+          <ProjectsGallery
+            currentLang={currentLang}
+            onOpenDiscuss={(initialMsg) => handleOpenDiscussWithMessage(initialMsg || '')}
+          />
 
           {/* 8. Interactive Lighting Scenarios (Work, Relax, Gallery, Night) */}
           <LightingScenarios

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Download, FileText, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Search, X, Download, FileText, ArrowRight, ArrowLeft } from 'lucide-react';
 import { ALEDO_PRODUCTS, ALEDO_PROJECTS, ALEDO_TRANSLATIONS } from '../data/aledoData';
 import { Language } from '../types';
 
@@ -20,6 +20,26 @@ export const SearchAndCatalogModal: React.FC<SearchAndCatalogModalProps> = ({
   currentLang
 }) => {
   const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -53,18 +73,29 @@ export const SearchAndCatalogModal: React.FC<SearchAndCatalogModalProps> = ({
         role="dialog"
         aria-modal="true"
         aria-label="Search and Architectural Assets Modal"
-        className="fixed inset-0 z-50 bg-[#0A0A0A]/95 backdrop-blur-2xl flex flex-col p-6 md:p-12 overflow-y-auto"
+        onClick={onClose}
+        className="fixed inset-0 z-50 bg-[#0A0A0A]/95 backdrop-blur-2xl flex flex-col p-4 sm:p-6 md:p-12 overflow-y-auto"
       >
-        <div className="max-w-5xl mx-auto w-full relative">
-          {/* Top Close */}
-          <button
-            type="button"
-            aria-label="Close search modal"
-            onClick={onClose}
-            className="absolute top-0 right-0 p-3 rounded-full bg-[#1C1C1C] hover:bg-[#E8C45A] hover:text-black text-white transition-all border border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8C45A]"
-          >
-            <X className="w-6 h-6" aria-hidden="true" />
-          </button>
+        <div onClick={(e) => e.stopPropagation()} className="max-w-5xl mx-auto w-full relative my-auto">
+          {/* Top Close & Back bar */}
+          <div className="flex items-center justify-between mb-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#1C1C1C] hover:bg-[#E8C45A] hover:text-black text-white text-xs font-mono transition-all border border-white/10"
+            >
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+              <span>{currentLang === 'UZ' ? 'QAYTISH' : 'НАЗАД'}</span>
+            </button>
+            <button
+              type="button"
+              aria-label="Close search modal"
+              onClick={onClose}
+              className="p-3 rounded-full bg-[#1C1C1C] hover:bg-[#E8C45A] hover:text-black text-white transition-all border border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8C45A]"
+            >
+              <X className="w-5 h-5" aria-hidden="true" />
+            </button>
+          </div>
 
           {/* Search Input */}
           <div className="pt-8 mb-12">

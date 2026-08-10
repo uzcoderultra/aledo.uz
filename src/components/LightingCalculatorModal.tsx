@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calculator, ArrowRight, Check, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { X, Calculator, ArrowRight, Check, Sparkles, ArrowLeft } from 'lucide-react';
 import { Language } from '../types';
 import { ALEDO_TRANSLATIONS } from '../data/aledoData';
 
@@ -20,6 +20,26 @@ export const LightingCalculatorModal: React.FC<LightingCalculatorModalProps> = (
   const [areaM2, setAreaM2] = useState<number>(150);
   const [spaceType, setSpaceType] = useState<'restaurant' | 'residence' | 'office' | 'retail' | 'museum'>('restaurant');
   const [ceilingHeight, setCeilingHeight] = useState<number>(3.5);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -57,13 +77,15 @@ export const LightingCalculatorModal: React.FC<LightingCalculatorModalProps> = (
         role="dialog"
         aria-modal="true"
         aria-labelledby="calculator-modal-title"
+        onClick={onClose}
         className="fixed inset-0 z-50 bg-[#0A0A0A]/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 overflow-y-auto"
       >
         <motion.div
           initial={{ scale: 0.95, y: 20 }}
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.95, y: 20 }}
-          className="relative w-full max-w-3xl bg-[#121212] border border-white/15 rounded-3xl p-6 md:p-10 text-[#F5F3EE] shadow-2xl my-8"
+          onClick={(e) => e.stopPropagation()}
+          className="relative w-full max-w-3xl bg-[#121212] border border-white/15 rounded-3xl p-6 md:p-10 text-[#F5F3EE] shadow-2xl my-auto"
         >
           <button
             type="button"

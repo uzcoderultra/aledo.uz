@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Briefcase, Coffee, Palette, Building, Sun, Sliders, ShieldCheck, Sparkles, Plus, Eye, EyeOff, Moon } from 'lucide-react';
 import { Language, ScenarioPreset, ScenarioHotspot } from '../types';
 import { ALEDO_TRANSLATIONS, LIGHTING_SCENARIOS } from '../data/aledoData';

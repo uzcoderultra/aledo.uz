@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { RotateCw, Sun, Sliders, Zap, Shield, Sparkles, Eye, Compass, Focus } from 'lucide-react';
 import { Language } from '../types';
 import { ALEDO_TRANSLATIONS } from '../data/aledoData';
