@@ -46,12 +46,22 @@ export async function processLeadSubmission(data: any) {
       });
 
       if (gsRes.ok) {
-        const gsData = await gsRes.json().catch(() => null);
+        const rawText = await gsRes.text();
+        let gsData: any = null;
+        try {
+          gsData = JSON.parse(rawText);
+        } catch {
+          // not valid JSON
+        }
         results.googleSheets = "success";
-        const urlFromGs = gsData?.driveUrl || gsData?.fileUrl;
-        if (urlFromGs && typeof urlFromGs === 'string' && urlFromGs.startsWith('http')) {
+
+        const urlFromGs = gsData?.driveUrl || gsData?.fileUrl || gsData?.driveFileUrl || (typeof rawText === "string" && rawText.startsWith("http") ? rawText : null);
+
+        if (urlFromGs && typeof urlFromGs === "string" && urlFromGs.startsWith("http")) {
           driveFileUrl = urlFromGs;
           results.driveFileUrl = urlFromGs;
+        } else {
+          console.warn("Google Apps Script did not return a valid Drive HTTP URL:", rawText);
         }
       } else {
         results.googleSheets = `error: status ${gsRes.status}`;

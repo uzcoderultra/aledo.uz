@@ -31,10 +31,34 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    if (initialMessage) {
-      setFormData(prev => ({ ...prev, message: initialMessage }));
+    if (isOpen) {
+      setIsSubmitted(false);
+      setIsSubmitting(false);
+      if (initialMessage) {
+        setFormData(prev => ({ ...prev, message: initialMessage }));
+      }
     }
-  }, [initialMessage]);
+  }, [isOpen, initialMessage]);
+
+  const handleResetForm = () => {
+    setIsSubmitted(false);
+    setIsSubmitting(false);
+    setFormData({
+      name: '',
+      company: '',
+      phone: '',
+      email: '',
+      message: initialMessage || ''
+    });
+    setFileName('');
+    setFileBase64('');
+    setFileType('');
+  };
+
+  const handleClose = () => {
+    handleResetForm();
+    onClose();
+  };
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -97,7 +121,7 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
         role="dialog"
         aria-modal="true"
         aria-labelledby="discussion-modal-title"
-        onClick={onClose}
+        onClick={handleClose}
         className="fixed inset-0 z-50 bg-[#0A0A0A]/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 md:p-8 overflow-y-auto"
       >
         <motion.div
@@ -111,7 +135,7 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
           <button
             type="button"
             aria-label="Close project discussion modal"
-            onClick={onClose}
+            onClick={handleClose}
             className="absolute top-6 right-6 p-3 rounded-full bg-[#1C1C1C] hover:bg-[#E8C45A] hover:text-black text-white transition-all border border-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8C45A]"
           >
             <X className="w-5 h-5" aria-hidden="true" />
@@ -174,12 +198,22 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
                     ? 'Rahmat! ALEDO Uzbekistan yoritish muhandisi 30 daqiqa ichida siz bilan bog\'lanadi.'
                     : 'Спасибо! Светотехник ALEDO Uzbekistan свяжется с вами в течение 30 минут.'}
                 </p>
-                <button
-                  onClick={onClose}
-                  className="mt-6 px-8 py-3 bg-[#E8C45A] text-[#0A0A0A] font-mono font-bold text-xs uppercase tracking-widest rounded-full"
-                >
-                  {currentLang === 'UZ' ? 'O\'LCHAMNI YOPISH' : 'ЗАКРЫТЬ ОКНО'}
-                </button>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
+                  <button
+                    type="button"
+                    onClick={handleResetForm}
+                    className="px-6 py-3 bg-[#E8C45A] hover:bg-white text-[#0A0A0A] font-mono font-bold text-xs uppercase tracking-widest rounded-full transition-all"
+                  >
+                    {currentLang === 'UZ' ? 'YANA BIR SO\'ROV YUBORISH' : 'ОТПРАВИТЬ ЕЩЁ ЗАЯВКУ'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="px-6 py-3 bg-[#222222] text-[#A6A39D] hover:text-white font-mono font-bold text-xs uppercase tracking-widest rounded-full border border-white/10 transition-all"
+                  >
+                    {currentLang === 'UZ' ? 'O\'LCHAMNI YOPISH' : 'ЗАКРЫТЬ ОКНО'}
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
