@@ -58,13 +58,30 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
 
   const t = ALEDO_TRANSLATIONS[currentLang];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          company: formData.company,
+          phone: formData.phone,
+          email: formData.email,
+          message: formData.message,
+          fileName: fileName || '',
+          source: 'Форма "Обсудить проект" на сайте ALEDO'
+        })
+      });
+    } catch (err) {
+      console.error('Failed to submit lead to backend:', err);
+    } finally {
       setIsSubmitting(false);
       setIsSubmitted(true);
-    }, 1200);
+    }
   };
 
   return (
