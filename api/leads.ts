@@ -1,5 +1,13 @@
 import { processLeadSubmission } from "../src/lib/leadHandler.js";
 
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: "50mb",
+    },
+  },
+};
+
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);

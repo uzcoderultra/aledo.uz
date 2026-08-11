@@ -31,14 +31,49 @@ export async function processLeadSubmission(data: any) {
     source: source || "Сайт ALEDO Uzbekistan"
   };
 
-  const results: { telegram?: string; googleSheets?: string } = {};
+  const results: { telegram?: string; googleSheets?: string; driveFileUrl?: string } = {};
+  let driveFileUrl = "";
 
-  // 1. Telegram Bot Integration
+  // 1. Google Sheets & Google Drive via Apps Script Web App
+  const appsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
+
+  if (appsScriptUrl) {
+    try {
+      const gsRes = await fetch(appsScriptUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(leadData)
+      });
+
+      if (gsRes.ok) {
+        const gsData = await gsRes.json().catch(() => null);
+        results.googleSheets = "success";
+        const urlFromGs = gsData?.driveUrl || gsData?.fileUrl;
+        if (urlFromGs && typeof urlFromGs === 'string' && urlFromGs.startsWith('http')) {
+          driveFileUrl = urlFromGs;
+          results.driveFileUrl = urlFromGs;
+        }
+      } else {
+        results.googleSheets = `error: status ${gsRes.status}`;
+      }
+    } catch (err: any) {
+      console.error("Google Sheets error:", err);
+      results.googleSheets = `error: ${err.message || "Failed to fetch Apps Script URL"}`;
+    }
+  } else {
+    results.googleSheets = "skipped (GOOGLE_APPS_SCRIPT_URL not configured in Environment)";
+  }
+
+  // 2. Telegram Bot Integration
   const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
   const telegramChatId = process.env.TELEGRAM_CHAT_ID;
 
   if (telegramBotToken && telegramChatId) {
     try {
+      const fileDisplay = driveFileUrl
+        ? `<a href="${driveFileUrl}">${escapeHtml(leadData.fileName)}</a> 🔗 (Google Drive)`
+        : escapeHtml(leadData.fileName);
+
       const textMessage = `
 🔥 <b>НОВАЯ ЗАЯВКА С САЙТА ALEDO UZBEKISTAN</b>
 
@@ -49,7 +84,7 @@ export async function processLeadSubmission(data: any) {
 💬 <b>Сообщение / Расчет:</b>
 ${escapeHtml(leadData.message)}
 
-📎 <b>Вложенный файл:</b> ${escapeHtml(leadData.fileName)}
+📎 <b>Вложенный файл:</b> ${fileDisplay}
 📍 <b>Источник:</b> ${escapeHtml(leadData.source)}
 🕒 <b>Время Ташкент:</b> ${leadData.timestamp}
       `.trim();
@@ -60,7 +95,8 @@ ${escapeHtml(leadData.message)}
         body: JSON.stringify({
           chat_id: telegramChatId,
           text: textMessage,
-          parse_mode: "HTML"
+          parse_mode: "HTML",
+          disable_web_page_preview: false
         })
       });
 
@@ -77,30 +113,6 @@ ${escapeHtml(leadData.message)}
     }
   } else {
     results.telegram = "skipped (TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID not configured in Environment)";
-  }
-
-  // 2. Google Sheets via Google Apps Script Web App URL
-  const appsScriptUrl = process.env.GOOGLE_APPS_SCRIPT_URL;
-
-  if (appsScriptUrl) {
-    try {
-      const gsRes = await fetch(appsScriptUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(leadData)
-      });
-
-      if (gsRes.ok) {
-        results.googleSheets = "success";
-      } else {
-        results.googleSheets = `error: status ${gsRes.status}`;
-      }
-    } catch (err: any) {
-      console.error("Google Sheets error:", err);
-      results.googleSheets = `error: ${err.message || "Failed to fetch Apps Script URL"}`;
-    }
-  } else {
-    results.googleSheets = "skipped (GOOGLE_APPS_SCRIPT_URL not configured in Environment)";
   }
 
   return {

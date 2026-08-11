@@ -263,12 +263,20 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
                     onChange={(e) => {
                       if (e.target.files && e.target.files[0]) {
                         const file = e.target.files[0];
+                        const maxSizeBytes = 50 * 1024 * 1024; // 50MB max for base64 payload
+                        if (file.size > maxSizeBytes) {
+                          alert(currentLang === 'UZ' 
+                            ? 'Fayl hajmi 50MB dan oshmasligi kerak. Iltimos, kichikroq fayl tanlang.' 
+                            : 'Размер файла не должен превышать 50 МБ. Пожалуйста, выберите файл меньшего размера.');
+                          setFileName(file.name + ' (слишком большой)');
+                          setFileBase64('');
+                          return;
+                        }
                         setFileName(file.name);
                         setFileType(file.type || 'application/octet-stream');
                         const reader = new FileReader();
                         reader.onload = () => {
                           const result = reader.result as string;
-                          // Extract base64 portion
                           const base64Data = result.includes(',') ? result.split(',')[1] : result;
                           setFileBase64(base64Data);
                         };
