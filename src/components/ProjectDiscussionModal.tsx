@@ -25,6 +25,8 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
     message: initialMessage
   });
   const [fileName, setFileName] = useState('');
+  const [fileBase64, setFileBase64] = useState('');
+  const [fileType, setFileType] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -73,6 +75,8 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
           email: formData.email,
           message: formData.message,
           fileName: fileName || '',
+          fileBase64: fileBase64 || '',
+          fileType: fileType || '',
           source: 'Форма "Обсудить проект" на сайте ALEDO'
         })
       });
@@ -258,7 +262,17 @@ export const ProjectDiscussionModal: React.FC<ProjectDiscussionModalProps> = ({
                     type="file"
                     onChange={(e) => {
                       if (e.target.files && e.target.files[0]) {
-                        setFileName(e.target.files[0].name);
+                        const file = e.target.files[0];
+                        setFileName(file.name);
+                        setFileType(file.type || 'application/octet-stream');
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                          const result = reader.result as string;
+                          // Extract base64 portion
+                          const base64Data = result.includes(',') ? result.split(',')[1] : result;
+                          setFileBase64(base64Data);
+                        };
+                        reader.readAsDataURL(file);
                       }
                     }}
                     className="absolute inset-0 opacity-0 cursor-pointer"

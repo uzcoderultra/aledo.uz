@@ -7,7 +7,7 @@ function escapeHtml(str: string): string {
 }
 
 export async function processLeadSubmission(data: any) {
-  const { name, company, phone, email, message, fileName, source } = data || {};
+  const { name, company, phone, email, message, fileName, fileBase64, fileType, source } = data || {};
 
   if (!name || !phone) {
     return {
@@ -26,6 +26,8 @@ export async function processLeadSubmission(data: any) {
     email: email ? String(email).trim() : "—",
     message: message ? String(message).trim() : "—",
     fileName: fileName ? String(fileName).trim() : "—",
+    fileBase64: fileBase64 || "",
+    fileType: fileType || "application/octet-stream",
     source: source || "Сайт ALEDO Uzbekistan"
   };
 
